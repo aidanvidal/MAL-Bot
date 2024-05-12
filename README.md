@@ -17,10 +17,10 @@ The MAL (my anime list) Project is a web application that allows users to manage
 - Database: SQLite3
 
 ## Installation
-1. Clone the repository: `git clone https://github.com/your-username/MAL_Project.git`
-2. Install dependencies: `npm install`
-3. Set up the database connection in the `.env` file
-4. Start the server: `npm start`
+1. Clone the repository: `git clone https://github.com/aidanvidal/MAL_Project.git`
+2. Install dependencies: `pip install -r requirements.txt`
+3. Set up the proper tokens in the `.env` file
+4. Start the server: `python manage.py runserver`
 
 ## Usage
 1. Register a new account or log in with existing credentials

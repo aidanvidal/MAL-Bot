@@ -1,0 +1,170 @@
+[
+    {
+        "type" : "function",
+        "function": {
+            "name": "get_anime_list",
+            "description": "Get a list of anime from myanimelist.net given a user name",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "user_name": {
+                        "type": "string",
+                        "description": "The user name of the person whose anime list you want to get, if they ask for their own anime list use '@me' as the user name",
+                        "default": "@me"
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "description": "The maximum number of anime to return, if they ask for all of their anime use 1000 as the limit no matter what",
+                        "default": 5
+                    },
+                    "sort": {
+                        "type": "string",
+                        "description": "The order in which to sort the anime, can be 'list_score', 'list_updated_at', 'anime_title', 'anime_start_date', 'anime_id'",
+                        "default": "list_score"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "The status of the anime to return, can be 'completed', 'watching', 'on_hold', 'dropped', 'plan_to_watch'",
+                        "default": "completed"
+                    },
+                    "offset": {
+                        "type": "integer",
+                        "description": "The number of anime to skip before returning the rest, if the user asks for their 5th favorite use 4 as the offset and 1 as the limit",
+                        "default": 0
+                    }
+                }
+            },
+            "required": ["user_name"]
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_anime_details",
+            "description": "Get details of an anime from myanimelist.net given an anime title. Can be used to provide specific details about an anime.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "anime_title": {
+                        "type": "string",
+                        "description": "The title of the anime you want to get details for. If the title has multiple seasons, specify the season number as well or use your best judegement to specify the correct title,"
+                    }
+                }
+            },
+            "required": ["anime_title"]
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_anime_rankings",
+            "description": "Get a list of anime rankings from myanimelist.net",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "limit": {
+                        "type": "integer",
+                        "description": "The maximum number of rankings to return",
+                        "default": 5
+                    },
+                    "ranking_type": {
+                        "type": "string",
+                        "description": "The type of ranking to return, can be 'all', 'airing', 'upcoming', 'tv', 'ova', 'movie', 'special', 'bypopularity', 'favorite', Use best judgement to specify the correct ranking type",
+                        "default": "all"
+                    },
+                    "offset": {
+                        "type": "integer",
+                        "description": "The number of rankings to skip before returning the rest, if they ask for the 5th highest ranked anime use 4 as the offset and 1 as the limit",
+                        "default": 0
+                    }
+                }
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_suggestions",
+            "description": "Get a list of anime recommendations from myanimelist.net for the user based on their anime list",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "limit": {
+                        "type": "integer",
+                        "description": "The maximum number of recommendations to return",
+                        "default": 5
+                    },
+                    "offset": {
+                        "type": "integer",
+                        "description": "The number of recommendations to skip before returning the rest, if they ask for the 5th recommendation use 4 as the offset and 1 as the limit",
+                        "default": 0
+                    }
+                }
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_seasonal_anime",
+            "description": "Get a list of anime from myanimelist.net for the current season",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "limit": {
+                        "type": "integer",
+                        "description": "The maximum number of anime to return",
+                        "default": 5
+                    },
+                    "offset": {
+                        "type": "integer",
+                        "description": "The number of anime to skip before returning the rest, if they ask for the 5th anime use 4 as the offset and 1 as the limit",
+                        "default": 0
+                    },
+                    "season": {
+                        "type": "string",
+                        "description": "The season to get anime for, can be 'winter', 'spring', 'summer', 'fall'",
+                        "default": "winter"
+                    },
+                    "year": {
+                        "type": "integer",
+                        "description": "The year to get anime for, if user does not specify a year",
+                        "default": 2017
+                    }
+                }
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function":{
+            "name": "update_anime_status",
+            "description": "Update the status of an anime in the user's list on myanimelist.net",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "anime_title": {
+                        "type": "string",
+                        "description": "The title of the anime you want to update the status for"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "The status of the anime to update, can be 'completed', 'watching', 'on_hold', 'dropped', 'plan_to_watch'",
+                        "default": "completed"
+                    },
+                    "score": {
+                        "type": "integer",
+                        "description": "The score to give the anime, can be 1-10",
+                        "default": 10
+                    },
+                    "is_rewatching": {
+                        "type": "boolean",
+                        "description": "Whether the user is rewatching the anime",
+                        "default": false
+                    }
+                }
+            },
+            "required": ["anime_title"]
+        }
+    }
+]

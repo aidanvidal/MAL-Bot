@@ -1,0 +1,116 @@
+{% extends 'MAL_app/base.html' %} {% block title %} List {% endblock %} 
+{% block content %} 
+
+{% if error_message %}
+<div class="alert alert-danger" role="alert">{{ error_message }}</div>
+{% endif %}
+<body class="bg-body-secondary">
+<div class="container-fluid">
+  <div class="row justify-content-center align-items-center vh-100">
+    <div class="col-6">
+      <div id="firstContainer" class="container bg-light border border-dark p-4">
+        <form id="firstForm" method="POST">
+          {% csrf_token %}
+          <label for="ClientId">ClientId:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="ClientId"
+            name="ClientId"
+            placeholder="Enter ClientId"
+          />
+          <label for="ClientSecret">ClientSecret:</label>
+          <input
+            type="text"
+            class="form-control mb-2"
+            id="ClientSecret"
+            name="ClientSecret"
+            placeholder="Enter ClientSecret"
+          />
+          <button id="submitButton" type="button" class="btn btn-primary mb-2">
+            Submit
+          </button>
+        </form>
+      </div>
+      <div id="secondContainer" class="container bg-light border border-dark p-4" style="display: none">
+        <p>
+          Click: <a id="outputLink" href="#">here</a> to be directed to a MAL
+          page to allow access to your account
+        </p>
+        <p>
+          Click allow, then in the url copy everything after the "code" and paste
+          it in below
+        </p>
+        <form id="secondForm" method="POST">
+          {% csrf_token %}
+          <input type="hidden" id="clientIdInput" name="clientId" value="" />
+          <input
+            type="hidden"
+            id="clientSecretInput"
+            name="clientSecret"
+            value=""
+          />
+          <input
+            type="hidden"
+            id="codeVerification"
+            name="codeVerification"
+            value=""
+          />
+          <label for="code">Code:</label>
+          <input
+            type="text"
+            class="form-control mb-2"
+            id="code"
+            name="code"
+            placeholder="Enter code"
+          />
+          <button type="submit" class="btn btn-primary mb-2">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $("#submitButton").on("click", function (event) {
+      event.preventDefault(); // Prevent form submission
+
+      // Get clientId and clientSecret from the first form
+      var clientId = $("#ClientId").val();
+      var clientSecret = $("#ClientSecret").val();
+
+      // Set the values of hidden input fields in the second form
+      $("#clientIdInput").val(clientId);
+      $("#clientSecretInput").val(clientSecret);
+
+      // Make AJAX request to process input and generate link
+      $.ajax({
+        url: '{% url "generate_token_link" %}',
+        method: "POST",
+        data: {
+          clientId: clientId,
+          clientSecret: clientSecret,
+          csrfmiddlewaretoken: "{{ csrf_token }}",
+        },
+        success: function (data) {
+          // Update the output link in the second container
+          var outputLink = $("#outputLink");
+          outputLink.attr("href", data.output_link);
+
+          $("#codeVerification").val(data.code_verification);
+
+          // Show the second container
+          $("#secondContainer").show();
+          $("#firstContainer").hide();
+        },
+        error: function (xhr, status, error) {
+          console.error(xhr.responseText);
+          alert("An error occurred while processing the input.");
+        },
+      });
+    });
+  });
+</script>
+{% endblock %}

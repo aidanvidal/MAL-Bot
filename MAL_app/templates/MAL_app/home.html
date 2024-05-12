@@ -1,0 +1,77 @@
+{% extends 'MAL_app/base.html' %} {% block title %} Home {% endblock %} 
+{% block content %}
+<body class="bg-body-secondary">
+  <div class="container-fluid">
+    <div class="row justify-content-center align-items-center vh-100">
+      <div class="col-6">
+        <div class="container bg-light border border-dark p-5">
+          <h1 class="mb-4 text-center">MAL Bot</h1>
+          {% if user.is_authenticated %}
+          <h2 class="text-center">Welcome, {{ user.username }}!</h2>
+          {% else %}
+          <h2 class="text-center">Welcome, guest!</h2>
+          {% endif %}
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <input
+                type="text"
+                id="inputTextbox"
+                class="form-control mb-2"
+                placeholder="Message MAL Bot"
+              />
+              <textarea
+                id="outputTextarea"
+                rows="4"
+                class="form-control mb-2"
+                style="resize: none"
+                readonly
+              ></textarea>
+              <button id="submitButton" class="btn btn-primary mb-2">
+                Submit
+              </button>
+              {% if user.is_authenticated %}
+              <button
+                class="btn btn-danger mb-2"
+                onclick="window.location.href='/logout'"
+              >
+                Logout
+              </button>
+              {% else %}
+              <button
+                class="btn btn-secondary mb-2"
+                onclick="window.location.href='/login'"
+              >
+                Login
+              </button>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+  function processInput() {
+    var inputText = $("#inputTextbox").val();
+    $.ajax({
+      url: '{% url "process_input" %}',
+      method: "POST",
+      data: {
+        input_text: inputText,
+        csrfmiddlewaretoken: "{{ csrf_token }}",
+      },
+      success: function (data) {
+        $("#outputTextarea").val(data.output_text);
+      },
+    });
+  }
+
+  $(document).ready(function () {
+    $("#submitButton").on("click", function () {
+      processInput();
+    });
+  });
+</script>
+{% endblock %}

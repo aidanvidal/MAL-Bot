@@ -1,4 +1,4 @@
-# Add your project dependencies here
+# Requirements for the project
 openai
 django
 

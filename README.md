@@ -31,3 +31,5 @@ The MAL (my anime list) Project is a web application that allows users to manage
 
 ## License
 This project is licensed under the [MIT License](LICENSE).
+
+Created by <aidanvidal>
